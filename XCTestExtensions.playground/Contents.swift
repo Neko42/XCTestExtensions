@@ -29,12 +29,6 @@ extension XCTest
                 XCTAssertEqualDictionaries(leftDictionaries, rightDictionaries)
             }
             
-            if let leftDictionaries = left as? [String:NSObjectProtocol], let rightDictionaries = right as? [String:NSObjectProtocol]
-            {
-                leftDictionaries.values.sorted(by: {$0.0.hash > $0.1.hash})
-                XCTAssertEqualDictionaries(leftDictionaries, rightDictionaries)
-            }
-            
             if let leftString = left as? String, let rightString = right as? String
             {
                 XCTAssertEqual(leftString, rightString)
