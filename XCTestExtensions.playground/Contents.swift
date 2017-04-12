@@ -16,28 +16,40 @@ extension XCTest
         
         for (left, right) in zip(leftKeyIterator, rightKeyIterator)
         {
+            print("will check that \(left) == \(right)")
             XCTAssertEqual(left, right)
-        }
-        
-        let leftValuesIterator = expression1.values.makeIterator()
-        let rightValuesIterator = expression2.values.makeIterator()
-        
-        for (left, right) in zip(leftValuesIterator, rightValuesIterator)
-        {
-            if let leftDictionaries = left as? [String:Any], let rightDictionaries = right as? [String:Any]
+            
+            let leftValues = expression1[left]!
+            let rightValues = expression2[right]!
+            
+            print("will check that \(leftValues) == \(rightValues)")
+            
+            if let leftDictionaries = leftValues as? [String:Any], let rightDictionaries = rightValues as? [String:Any]
             {
+                print("will compare \(leftDictionaries) and \(rightDictionaries)")
                 XCTAssertEqualDictionaries(leftDictionaries, rightDictionaries)
             }
-            
-            if let leftString = left as? String, let rightString = right as? String
+                
+            else if let leftString = leftValues as? String, let rightString = rightValues as? String
             {
                 XCTAssertEqual(leftString, rightString)
             }
-            if let leftInt = left as? Int, let rightInt = right as? Int
+            else if let leftInt = leftValues as? Double, let rightInt = rightValues as? Double
             {
                 XCTAssertEqual(leftInt, rightInt)
             }
-            //Add your own types to test here
+            else if let leftInt = leftValues as? Int64, let rightInt = rightValues as? Int64
+            {
+                XCTAssertEqual(leftInt, rightInt)
+            }
+            else if let leftInt = leftValues as? [Int64], let rightInt = rightValues as? [Int64]
+            {
+                XCTAssertEqual(leftInt, rightInt)
+            }
+            else
+            {
+                XCTFail("Could not determine type for \(leftValues) or \(rightValues)")
+            }
         }
     }
 }
@@ -68,3 +80,10 @@ class Tester : XCTestCase
 
 let testSuite = Tester.defaultTestSuite()
 testSuite.run()
+
+
+
+let timeInterval = TimeInterval(54.35)
+let sameInInt = Int64(timeInterval)
+
+
